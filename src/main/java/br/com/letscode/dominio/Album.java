@@ -15,5 +15,4 @@ public class Album {
     private String quantidadeEmEstoque;
     private String numeroDeFaixas;
     private String[] faixas;
-    private String[] duracaoDeFaixas;
 }

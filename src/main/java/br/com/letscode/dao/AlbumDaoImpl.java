@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 public class AlbumDaoImpl implements AlbumDao{
 
-    String caminho = "C:/Users/DELL/Documents/LojaDeDiscos/src/main/java/arquivo/disco.csv";
+    String caminho = "C:/Users/DELL/Documents/LojaDeDiscos/src/main/java/arquivo/discos.csv";
 
     private Path path;
     @PostConstruct
@@ -128,12 +128,15 @@ public class AlbumDaoImpl implements AlbumDao{
 
 
     private String format(Album album){
-        String format = String.format("%s;%s;%s;%s;%s;%s;%s \r\n", album.getIdentificador(),
-                album.getArtista(), album.getNome(), album.getGenero(),
-                album.getPreco(), album.getQuantidadeEmEstoque(),
-                album.getNumeroDeFaixas());
-//                album.getFaixas(),
-//                album.getDuracaoDeFaixas());
+        String format = String.format("%s;%s;%s;%s;%s;%s;%s;%s \r\n",
+                album.getIdentificador(),
+                album.getArtista(),
+                album.getNome(),
+                album.getGenero(),
+                album.getPreco(),
+                album.getQuantidadeEmEstoque(),
+                album.getNumeroDeFaixas(),
+                album.getFaixas());
         return format;
     }
 
@@ -147,33 +150,20 @@ public class AlbumDaoImpl implements AlbumDao{
         album.setPreco(token.nextToken());
         album.setQuantidadeEmEstoque(token.nextToken());
         album.setNumeroDeFaixas(token.nextToken());
-//        var data = token.nextToken();
-//        return continueConverter(album, data);
+
+        var data = token.nextToken();
+
+        int numeroDeFaixas = Integer.parseInt(album.getNumeroDeFaixas());
+        numeroDeFaixas = numeroDeFaixas + numeroDeFaixas;
+        String[] faixas = new String[numeroDeFaixas];
+
+        for(int i = 0; i < numeroDeFaixas-1; i++){
+            faixas[i] = data;
+            data = token.nextToken();
+        }
+        album.setFaixas(faixas);
         return album;
     }
-
-//    private Album continueConverter(Album album, String data){
-//        int numeroDeFaixas = Integer.parseInt(album.getNumeroDeFaixas());
-//        String[] values = new String[]{data};
-//        String[] faixas = new String[numeroDeFaixas];
-//        String[] duracaoDeFaixas = new String[numeroDeFaixas];
-//
-//        int j = 0;
-//
-//        for (int i = 0; i < numeroDeFaixas; i++, j = j + 2){
-//            faixas[i] = values[j];
-//        }
-//        album.setFaixas(faixas);
-//
-//        int t = 1;
-//
-//        for(int i = 0; i < numeroDeFaixas; i++, t = t + 2){
-//            duracaoDeFaixas[i] = values[t];
-//        }
-//        album.setDuracaoDeFaixas(duracaoDeFaixas);
-//
-//        return album;
-//    }
 
     public void eraseContent() throws IOException {
         BufferedWriter writer = Files.newBufferedWriter(path);
