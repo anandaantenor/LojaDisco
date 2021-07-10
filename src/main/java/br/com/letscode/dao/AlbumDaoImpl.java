@@ -162,7 +162,6 @@ public class AlbumDaoImpl implements AlbumDao{
             faixas[i] = data;
             data = token.nextToken();
             i++;
-            System.out.println(i);
         }
         album.setFaixas(faixas);
         return album;
