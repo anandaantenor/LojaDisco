@@ -34,15 +34,15 @@ public class LojaDiscoServlet extends HttpServlet {
         gson = new Gson();
     }
 
-    /*
+
     @Override
     @SuppressWarnings("unchecked")
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         StringBuilder conteudo = getBody(request);
-        Cliente clienteRequest = gson.fromJson(conteudo.toString(), Cliente.class);
+        Album albumRequest = gson.fromJson(conteudo.toString(), Album.class);
         PrintWriter print = prepareResponse(response);
         String resposta = "";
-        if(null==clienteRequest.getNome() || null==clienteRequest.getCpf()){
+        if(null==albumRequest.getNome() || null==albumRequest.getArtista()){
             CustomMessage message = new CustomMessage(HttpServletResponse.SC_BAD_REQUEST, "Invalid Parameters");
             response.setStatus(message.getStatus());
             resposta= gson.toJson(message);
@@ -51,14 +51,14 @@ public class LojaDiscoServlet extends HttpServlet {
             try {
                 HttpSession sessao = request.getSession(true);
 
-                clienteService.inserir(clienteRequest);
+                albumService.inserir(albumRequest);
 
-                List<Cliente> clientes = clienteService.listAll();
+                List<Album> albums = albumService.listAll();
 
 
-                sessao.setAttribute(CLIENTES_SESSION, clientes);
+                sessao.setAttribute(ALBUMS_SESSION, albums);
 
-                resposta = gson.toJson(clientes);
+                resposta = gson.toJson(albums);
             }catch (UsuarioJaExisteException usuarioJaExisteException){
                 response.setStatus(400);
                 resposta = gson.toJson(new CustomMessage(400,usuarioJaExisteException.getMessage()));
@@ -68,7 +68,7 @@ public class LojaDiscoServlet extends HttpServlet {
         print.close();
 
     }
-    */
+
 
     private PrintWriter prepareResponse(HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
@@ -120,7 +120,7 @@ public class LojaDiscoServlet extends HttpServlet {
         printWriter.close();
     }
 
-    /*
+
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         StringBuilder conteudo = getBody(request);
@@ -131,16 +131,16 @@ public class LojaDiscoServlet extends HttpServlet {
         if(Objects.isNull(identificador)){
             resposta = erroMessage(response);
         }else{
-            Cliente cliente = gson.fromJson(conteudo.toString(),Cliente.class);
-            resposta = gson.toJson(clienteService.alterar(cliente, identificador));
-            request.getSession().setAttribute(CLIENTES_SESSION,clienteService.listAll());
+            Album album = gson.fromJson(conteudo.toString(),Album.class);
+            resposta = gson.toJson(albumService.alterar(album, identificador));
+            request.getSession().setAttribute(ALBUMS_SESSION,albumService.listAll());
         }
 
         printWriter.write(resposta);
         printWriter.close();
     }
-    */
-    /*
+
+
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String identificador = request.getParameter("identificador");
@@ -150,13 +150,13 @@ public class LojaDiscoServlet extends HttpServlet {
             resposta = erroMessage(response);
         }else {
 
-            clienteService.remove(identificador);
-            resposta = gson.toJson(new CustomMessage(204, "cliente removido"));
-            request.getSession().setAttribute(CLIENTES_SESSION, clienteService.listAll());
+            albumService.remove(identificador);
+            resposta = gson.toJson(new CustomMessage(204, "album removido"));
+            request.getSession().setAttribute(ALBUMS_SESSION, albumService.listAll());
 
         }
     }
-    */
+
     private String erroMessage(HttpServletResponse response) {
 
         response.setStatus(400);

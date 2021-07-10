@@ -20,7 +20,7 @@ public class AlbumServiceImpl implements AlbumService{
 
             throw new UsuarioJaExisteException("Esse disco já foi registrado");
         }
-        album.setIdentificador(UUID.randomUUID().toString());
+        //album.setIdentificador(UUID.randomUUID().toString());
         return albumDao.inserirNoArquivo(album);
     }
 

@@ -6,3 +6,4 @@ br\com\letscode\excecoes\UsuarioJaExisteException.class
 br\com\letscode\dao\AlbumDaoImpl.class
 br\com\letscode\dao\AlbumDao.class
 br\com\letscode\dominio\CustomMessage.class
+br\com\letscode\dominio\AlbumParaTeste.class
