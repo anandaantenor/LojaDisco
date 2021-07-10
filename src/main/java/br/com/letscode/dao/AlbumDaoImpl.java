@@ -154,12 +154,15 @@ public class AlbumDaoImpl implements AlbumDao{
         var data = token.nextToken();
 
         int numeroDeFaixas = Integer.parseInt(album.getNumeroDeFaixas());
-        numeroDeFaixas = numeroDeFaixas + numeroDeFaixas;
-        String[] faixas = new String[numeroDeFaixas];
+        String[] faixas = new String[numeroDeFaixas*2];
 
-        for(int i = 0; i < numeroDeFaixas-1; i++){
+
+        int i = 0;
+        while(token.hasMoreElements()){
             faixas[i] = data;
             data = token.nextToken();
+            i++;
+            System.out.println(i);
         }
         album.setFaixas(faixas);
         return album;
