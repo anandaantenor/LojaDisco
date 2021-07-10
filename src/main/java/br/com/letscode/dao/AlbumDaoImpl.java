@@ -74,7 +74,7 @@ public class AlbumDaoImpl implements AlbumDao{
     @Override
     public Optional<Album> findByFaixa(String nome) throws IOException {
         List<Album> albums = getAll();
-        return albums.stream().filter(album -> album.getFaixas().equals(nome)).findFirst();
+        return albums.stream().filter(album -> Arrays.asList(album.getFaixas()).contains(nome)).findFirst();
     }
 
     @Override
