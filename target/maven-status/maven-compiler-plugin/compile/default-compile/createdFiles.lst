@@ -1,9 +1,10 @@
 br\com\letscode\LojaDiscoServlet.class
 br\com\letscode\service\AlbumServiceImpl.class
 br\com\letscode\service\AlbumService.class
+br\com\letscode\excecoes\AlbumJaExisteException.class
 br\com\letscode\dominio\Album.class
-br\com\letscode\excecoes\UsuarioJaExisteException.class
 br\com\letscode\dao\AlbumDaoImpl.class
+br\com\letscode\excecoes\AlbumNaoEncontradoException.class
 br\com\letscode\dao\AlbumDao.class
 br\com\letscode\dominio\CustomMessage.class
 br\com\letscode\dominio\AlbumParaTeste.class

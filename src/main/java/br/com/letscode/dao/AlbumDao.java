@@ -21,5 +21,5 @@ public interface AlbumDao {
 
     Album alterarArquivo(Album album, String identificador) throws IOException;
 
-    void removerItemArquivo(String identificador) throws IOException;
+    Album removerItemArquivo(String identificador) throws IOException;
 }

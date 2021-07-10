@@ -2,7 +2,7 @@ package br.com.letscode.service;
 
 import br.com.letscode.dao.AlbumDao;
 import br.com.letscode.dominio.*;
-import br.com.letscode.excecoes.UsuarioJaExisteException;
+import br.com.letscode.excecoes.AlbumJaExisteException;
 import jakarta.inject.Inject;
 
 import java.io.IOException;
@@ -18,9 +18,9 @@ public class AlbumServiceImpl implements AlbumService{
     public Album inserir(Album album) throws IOException {
         if(albumDao.findByNome(album.getNome()).isPresent()){
 
-            throw new UsuarioJaExisteException("Esse disco já foi registrado");
+            throw new AlbumJaExisteException("Esse disco já foi registrado");
         }
-        //album.setIdentificador(UUID.randomUUID().toString());
+        album.setIdentificador(UUID.randomUUID().toString());
         return albumDao.inserirNoArquivo(album);
     }
 
@@ -56,7 +56,8 @@ public class AlbumServiceImpl implements AlbumService{
     }
 
     @Override
-    public void remove(String identificador) throws IOException{
+    public Album remove(String identificador) throws IOException{
         albumDao.removerItemArquivo(identificador);
+        return null;
     }
 }

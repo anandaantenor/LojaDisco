@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 public class AlbumDaoImpl implements AlbumDao{
 
-    String caminho = "C:/Users/DELL/Documents/LojaDeDiscos/src/main/java/arquivo/discos.csv";
+    String caminho = "C:/Users/DELL/Documents/LojaDeDiscos/src/main/java/arquivo/disco.csv";
 
     private Path path;
     @PostConstruct
@@ -40,7 +40,6 @@ public class AlbumDaoImpl implements AlbumDao{
         return album;
     }
 
-    //escreve o arquivo ou adiciona um conteudo junto ao mesmo.
     private void write(String albumStr, StandardOpenOption option) throws IOException {
 
         try(BufferedWriter bf = Files.newBufferedWriter(path, option)){
@@ -50,7 +49,6 @@ public class AlbumDaoImpl implements AlbumDao{
     }
 
     @Override
-    //lista todos os elementos contidos no arquivo.
     public List<Album> getAll() throws IOException{
         List<Album> album;
         try(BufferedReader br = Files.newBufferedReader(path)){
@@ -111,53 +109,71 @@ public class AlbumDaoImpl implements AlbumDao{
     }
 
     @Override
-    public void removerItemArquivo(String nomeAlbum) throws IOException {
+    public Album removerItemArquivo(String nomeAlbum) throws IOException {
         List<Album> albums = getAll();
         List<Album> albumResultante = new ArrayList<>();
+        Album albumRemovido = null;
+
         for (Album album:albums){
             if(!album.getNome().equals(nomeAlbum)){
                 albumResultante.add(album);
+            }else{
+                albumRemovido = album;
             }
         }
         eraseContent();
         reescreverArquivo(albumResultante);
-
+        return albumRemovido;
     }
 
-    //FIXME precisa arrumar essa parte para conseguir inserir no json
-    public ArrayList faixasArray(String nome) throws IOException {
-        Optional<Album> albumResultante = findByNome(nome);
-        ArrayList faixas = new ArrayList();
-        int j = 6;
-        int numeroDeFaixas = Integer.parseInt(albumResultante.get().getNumeroDeFaixas());
-        ArrayList[] values = (ArrayList[]) albumResultante.stream().toArray();
-        for(int i = 0; i < numeroDeFaixas; i++, j = j + 2){
-            faixas =  values[j];
-        }
-        return faixas;
-    }
 
-    @SneakyThrows
     private String format(Album album){
         String format = String.format("%s;%s;%s;%s;%s;%s;%s \r\n", album.getIdentificador(),
-                album.getNome(), album.getArtista(), album.getGenero(),
+                album.getArtista(), album.getNome(), album.getGenero(),
                 album.getPreco(), album.getQuantidadeEmEstoque(),
                 album.getNumeroDeFaixas());
+//                album.getFaixas(),
+//                album.getDuracaoDeFaixas());
         return format;
     }
 
     private Album convert(String linha){
-        StringTokenizer token = new StringTokenizer(linha,",");
+        StringTokenizer token = new StringTokenizer(linha,";");
         Album album = new Album();
         album.setIdentificador(token.nextToken());
-        album.setNome(token.nextToken());
         album.setArtista(token.nextToken());
+        album.setNome(token.nextToken());
         album.setGenero(token.nextToken());
         album.setPreco(token.nextToken());
         album.setQuantidadeEmEstoque(token.nextToken());
         album.setNumeroDeFaixas(token.nextToken());
+//        var data = token.nextToken();
+//        return continueConverter(album, data);
         return album;
     }
+
+//    private Album continueConverter(Album album, String data){
+//        int numeroDeFaixas = Integer.parseInt(album.getNumeroDeFaixas());
+//        String[] values = new String[]{data};
+//        String[] faixas = new String[numeroDeFaixas];
+//        String[] duracaoDeFaixas = new String[numeroDeFaixas];
+//
+//        int j = 0;
+//
+//        for (int i = 0; i < numeroDeFaixas; i++, j = j + 2){
+//            faixas[i] = values[j];
+//        }
+//        album.setFaixas(faixas);
+//
+//        int t = 1;
+//
+//        for(int i = 0; i < numeroDeFaixas; i++, t = t + 2){
+//            duracaoDeFaixas[i] = values[t];
+//        }
+//        album.setDuracaoDeFaixas(duracaoDeFaixas);
+//
+//        return album;
+//    }
 
     public void eraseContent() throws IOException {
         BufferedWriter writer = Files.newBufferedWriter(path);
